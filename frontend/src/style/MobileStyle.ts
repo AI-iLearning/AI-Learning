@@ -6,7 +6,7 @@ export const MobileContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  height: 100vh;
+  height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);

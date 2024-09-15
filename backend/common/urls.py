@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserRegistrationView, AuthAPIView, EmailCheckView, NicknameCheckView, UsersListView, CurrentUserView
+from .views import UserRegistrationView, AuthAPIView, EmailCheckView, NicknameCheckView, UsersListView, CurrentUserView, kakao_callback
 
 
 app_name = 'common'  # 네임스페이스 설정
@@ -13,4 +13,5 @@ urlpatterns = [
     path('check-nickname', NicknameCheckView.as_view(), name='nickname-check'),
     path('list', UsersListView.as_view(), name='all-users'),
     path('member', CurrentUserView.as_view(), name='current-user'),
+    path('kakao-callback',kakao_callback)
 ]

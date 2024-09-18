@@ -1,5 +1,7 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager,User
 from django.db import models
+from django.conf import settings
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, nickname, password=None, **extra_fields):
@@ -42,3 +44,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)

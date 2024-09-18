@@ -218,10 +218,15 @@ class AllPlaceView(APIView):
         return Response(response_data, status=status.HTTP_200_OK)
     
     # CSV 파일 경로 설정
-CSV_FILE_PATH = os.path.join(settings.BASE_DIR, 'backend', 'data', 'combined_data_with_NX_NY.csv')
+CSV_FILE_PATH = os.path.join(settings.BASE_DIR, 'calender', 'data', 'combined_data_with_NX_NY.csv')
+
 
 # CSV 데이터를 pandas로 불러오기
 df = pd.read_csv(CSV_FILE_PATH)
+print(df[['NX', 'NY']].isnull().sum())
+
+# NX와 NY 열의 결측치 제거
+df = df.dropna(subset=['NX', 'NY'])
 contentid_mapping = df.set_index(['NX', 'NY'])['contentid'].to_dict()
 
 # 강수형태 필터링 함수 (PTY가 1, 2, 3, 4인 경우만 반환)

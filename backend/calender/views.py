@@ -7,6 +7,11 @@ from schedule.models import Schedule, Place, DateMemo
 from .models import Location
 from geopy.distance import geodesic
 import datetime
+import requests
+import pandas as pd
+import os
+from django.http import JsonResponse
+from django.conf import settings
 
 from calender.models import Location  # Location 모델을 calender 앱에서 임포트
 
@@ -211,3 +216,104 @@ class AllPlaceView(APIView):
             })
 
         return Response(response_data, status=status.HTTP_200_OK)
+    
+    # CSV 파일 경로 설정
+CSV_FILE_PATH = os.path.join(settings.BASE_DIR, 'backend', 'data', 'combined_data_with_NX_NY.csv')
+
+# CSV 데이터를 pandas로 불러오기
+df = pd.read_csv(CSV_FILE_PATH)
+contentid_mapping = df.set_index(['NX', 'NY'])['contentid'].to_dict()
+
+# 강수형태 필터링 함수 (PTY가 1, 2, 3, 4인 경우만 반환)
+def filter_weather_data(weather_data):
+    filtered_data = []
+    for item in weather_data:
+        if item['category'] == 'PTY' and item['fcstValue'] in ['1', '2', '3', '4']:
+            filtered_data.append({
+                "date": item['fcstDate'],
+                "weather": int(item['fcstValue']),
+                "contentid": contentid_mapping.get((item['nx'], item['ny']), None)
+            })
+    return filtered_data
+
+# 날씨 데이터를 API로 조회하는 함수
+def get_weather_data(base_date, base_time, nx, ny):
+    url = "https://apihub.kma.go.kr/api/typ02/openApi/VilageFcstInfoService_2.0/getVilageFcst"
+    params = {
+        "serviceKey": settings.KMA_API_KEY,  # API 인증키 설정
+        "numOfRows": 50,
+        "pageNo": 1,
+        "dataType": "JSON",
+        "base_date": base_date,
+        "base_time": base_time,
+        "nx": nx,
+        "ny": ny
+    }
+    
+    try:
+        response = requests.get(url, params=params)
+        response.raise_for_status()  # HTTP 오류가 발생하면 예외를 발생시킵니다.
+        return response.json().get('response', {}).get('body', {}).get('items', {}).get('item', [])
+    except requests.RequestException as e:
+        print(f"Request failed: {e}")
+        return []
+
+# 현재 시간 기준으로 가장 가까운 base_time을 설정
+def get_base_time():
+    now = datetime.now()
+    hour = now.hour
+
+    if hour < 2:
+        return "2300"
+    elif hour < 5:
+        return "0200"
+    elif hour < 8:
+        return "0500"
+    elif hour < 11:
+        return "0800"
+    elif hour < 14:
+        return "1100"
+    elif hour < 17:
+        return "1400"
+    elif hour < 20:
+        return "1700"
+    elif hour < 23:
+        return "2000"
+    else:
+        return "2300"
+
+# View 처리 함수
+def weather_forecast(request):
+    start_date = request.GET.get('startDate')
+    end_date = request.GET.get('endDate')
+
+    # 유효한 날짜 포맷인지 확인
+    try:
+        datetime.strptime(start_date, "%Y-%m-%d")
+        datetime.strptime(end_date, "%Y-%m-%d")
+    except ValueError:
+        return JsonResponse({"error": "Invalid date format. Use YYYY-MM-DD."}, status=400)
+
+    # API 요청에 필요한 base_time 설정 (현재 시간 기준으로 가장 가까운 base_time)
+    base_time = get_base_time()
+
+    result = []
+
+    try:
+        # CSV 파일에서 nx, ny 데이터를 가져옴
+        for _, row in df.iterrows():
+            nx, ny = row['NX'], row['NY']
+
+            # startDate ~ endDate 기간 동안의 데이터를 가져옴
+            for date in pd.date_range(start=start_date, end=end_date):
+                base_date = date.strftime("%Y%m%d")  # 프론트에서 받은 startDate를 base_date로 설정
+                weather_data = get_weather_data(base_date, base_time, nx, ny)
+
+                # PTY 필터링 후 응답 구성
+                filtered_weather_data = filter_weather_data(weather_data)
+                result.extend(filtered_weather_data)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse(result, safe=False)

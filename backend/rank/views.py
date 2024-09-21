@@ -54,6 +54,27 @@ def get_top_100(request):
                         combined_data.append(item)
                         seen_places.add(place)
 
+         # 100개가 안될 경우, CSV에서 부족한 개수만큼 추가
+        if len(combined_data) < 100:
+            additional_items_needed = 100 - len(combined_data)
+
+            # CSV에서 부족한 장소들 추가
+            for _, row in pd.concat([csv_data_12, csv_data_14]).iterrows():
+                place = row['title']
+                item = {
+                    'contentid': row['contentid'],
+                    'contenttypeid': row['contenttypeid'],
+                    'place': place,
+                    'firstimage': row['firstimage']
+                }
+                if place not in seen_places:
+                    combined_data.append(item)
+                    seen_places.add(place)
+
+                # 100개가 되면 중지
+                if len(combined_data) >= 100:
+                    break
+
         # 100개 항목만 반환
         top_100_items = combined_data[:100]
         return JsonResponse(top_100_items, safe=False)

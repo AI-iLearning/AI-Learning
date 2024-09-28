@@ -8,7 +8,8 @@ urlpatterns = [
     path('ailearning/members/', include('common.urls')),
     path('ailearning/schedule/', include('schedule.urls')),
     path('ailearning/profile/', include('profiles.urls')),
-    path('ailearning/calendar/', include('calender.urls'))
+    path('ailearning/calendar/', include('calender.urls')),
+    path('ailearning/guide/', include('guide.urls')),
 ]
 
 # 개발 환경에서 media 파일 제공

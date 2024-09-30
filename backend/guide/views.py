@@ -16,8 +16,9 @@ def send_chat(request):
             guide_id = data.get('guideId')
             chat_message = data.get('chat')
             print(f"Guide ID: {guide_id}, Chat Message: {chat_message}")
+            SendChat.objects.create(guide_id=guide_id, chat_message=chat_message)
 
-            # 채팅 메시지를 처리하지만 저장하지 않음
+            # 채팅 메시지를 처리
             return JsonResponse({'message': 'Success Response'}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({'message': 'Invalid JSON'}, status=400)
@@ -41,3 +42,4 @@ def get_chat_messages(request):
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+ 

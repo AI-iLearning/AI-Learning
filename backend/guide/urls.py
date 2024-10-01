@@ -1,9 +1,7 @@
 from django.urls import path
-from .views import send_chat
-from .views import get_chat_messages
-
+from .views import SendChatView, GetChatMessagesView
 
 urlpatterns = [
-    path('send/', send_chat, name='send_chat'),
-    path('message/', get_chat_messages, name='get_chat_messages'),
+    path('send/', SendChatView.as_view(), name='send_chat'),
+    path('message/', GetChatMessagesView.as_view(), name='get_chat_messages'),
 ]

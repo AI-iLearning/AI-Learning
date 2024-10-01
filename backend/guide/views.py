@@ -6,6 +6,7 @@ from .models import SendChat
 from django.contrib.auth import get_user_model
 import json
 
+# CustomUser 모델을 가져오기 위해 get_user_model 사용
 User = get_user_model()
 
 # Send chat API

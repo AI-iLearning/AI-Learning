@@ -1,8 +1,7 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 import json
 from .models import SendChat
@@ -10,12 +9,13 @@ from .models import SendChat
 # CustomUser 모델을 가져오기 위해 get_user_model 사용
 User = get_user_model()
 
+
 # Send chat API
-@csrf_exempt
-@authentication_classes([JWTAuthentication])  # JWT 인증
-@permission_classes([IsAuthenticated])  # 인증된 사용자만 접근 가능
-def send_chat(request):
-    if request.method == 'POST':
+class SendChatAPIView(APIView):
+    authentication_classes = [JWTAuthentication]  # JWT 인증
+    permission_classes = [IsAuthenticated]  # 인증된 사용자만 접근 가능
+
+    def post(self, request):
         try:
             # 요청 바디에서 데이터를 가져옴
             data = json.loads(request.body)
@@ -33,16 +33,16 @@ def send_chat(request):
 
         except json.JSONDecodeError:
             return JsonResponse({'message': 'Invalid JSON'}, status=400)
-
-    return JsonResponse({'message': 'Method Not Allowed'}, status=405)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)
 
 
 # Get chat messages API
-@csrf_exempt
-@authentication_classes([JWTAuthentication])  # JWT 인증
-@permission_classes([IsAuthenticated])  # 인증된 사용자만 접근 가능
-def get_chat_messages(request):
-    if request.method == 'POST':
+class GetChatMessagesAPIView(APIView):
+    authentication_classes = [JWTAuthentication]  # JWT 인증
+    permission_classes = [IsAuthenticated]  # 인증된 사용자만 접근 가능
+
+    def post(self, request):
         try:
             # 요청 바디에서 guideId를 가져옴
             data = json.loads(request.body)
@@ -59,5 +59,5 @@ def get_chat_messages(request):
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+        except Exception as e:
+            return JsonResponse({'message': str(e)}, status=500)

@@ -46,18 +46,21 @@ class GetChatMessagesView(APIView):
             # 인증된 사용자 정보 (JWT 토큰으로 인증된 사용자)
             user = request.user
 
-            # 요청 바디에서 guideId를 가져옴
-            data = request.data
-            guide_id = data.get('guideId')
+            # 가이드 ID 1~20번까지 확인
+            guide_ids = range(1, 21)
+            response_data = []
 
-            if not guide_id:
-                return Response({'message': 'Missing guideId'}, status=400)
+            # 각 guideId에 대해 해당 사용자의 채팅 메시지 가져오기
+            for guide_id in guide_ids:
+                messages = SendChat.objects.filter(guide_id=guide_id, user=user).values_list('chat_message', flat=True)
+                if messages:
+                    response_data.append({
+                        "guideId": guide_id,
+                        "chat": list(messages)
+                    })
 
-            # 사용자와 guide_id에 해당하는 채팅 메시지를 필터링
-            messages = SendChat.objects.filter(guide_id=guide_id, user=user).values_list('chat_message', flat=True)
-
-            # 메시지 리스트를 JSON 형태로 반환
-            return Response({"chat": list(messages)}, status=200)
+            # 채팅 내역이 있는 guideId와 그에 대한 채팅 메시지를 JSON 형태로 반환
+            return Response(response_data, status=200)
 
         except json.JSONDecodeError:
             return Response({'message': 'Invalid JSON format'}, status=400)

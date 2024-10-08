@@ -46,21 +46,46 @@ class GetChatMessagesView(APIView):
             # 인증된 사용자 정보 (JWT 토큰으로 인증된 사용자)
             user = request.user
 
-            # 가이드 ID 1~20번까지 확인
-            guide_ids = range(1, 21)
-            response_data = []
+            # 요청 바디에서 guideId를 가져옴
+            data = request.data
+            guide_id = data.get('guideId')
 
-            # 각 guideId에 대해 해당 사용자의 채팅 메시지 가져오기
-            for guide_id in guide_ids:
-                messages = SendChat.objects.filter(guide_id=guide_id, user=user).values_list('chat_message', flat=True)
-                if messages:
-                    response_data.append({
-                        "guideId": guide_id,
-                        "chat": list(messages)
-                    })
+            if not guide_id:
+                return Response({'message': 'Missing guideId'}, status=400)
 
-            # 채팅 내역이 있는 guideId와 그에 대한 채팅 메시지를 JSON 형태로 반환
-            return Response(response_data, status=200)
+            # 사용자와 guide_id에 해당하는 채팅 메시지를 필터링
+            messages = SendChat.objects.filter(guide_id=guide_id, user=user).values_list('chat_message', flat=True)
+
+            # 메시지 리스트를 JSON 형태로 반환
+            return Response({"chat": list(messages)}, status=200)
 
         except json.JSONDecodeError:
             return Response({'message': 'Invalid JSON format'}, status=400)
+#select api
+class SelectGuideView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user  # JWT 인증된 사용자 정보
+        
+        # 1~20 가이드 중에서 대화한 가이드들을 필터링
+        chats = SendChat.objects.filter(user=user, guide_id__range=(1, 20))
+        
+        # 가이드 ID별로 채팅 메시지를 그룹화
+        guide_chat_data = {}
+        for chat in chats:
+            if chat.guide_id not in guide_chat_data:
+                guide_chat_data[chat.guide_id] = []
+            guide_chat_data[chat.guide_id].append(chat.chat_message)
+        
+        # 가이드 ID와 대화 내용을 배열 형식으로 포맷
+        response_data = [
+            {
+                "guideId": guide_id,
+                "chat": chat_messages
+            }
+            for guide_id, chat_messages in guide_chat_data.items()
+        ]
+        
+        return Response(response_data, status=200)

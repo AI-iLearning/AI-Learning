@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { postMessage } from '../../../api/guide/postMessage'
+import { getSelect } from '../../../api/guide/getSelect'
 import authToken from '../../../stores/authToken'
 import { guideData } from '../datas/GuideList'
 import * as L from '../styles/GuideBox.style'
@@ -21,23 +21,10 @@ const ChatGuideList = () => {
     const fetchChatGuides = async () => {
       if (!token) return
 
-      // 1~20번의 guideId에 대해 postMessage API 호출
-      const guideIds = Array.from({ length: 20 }, (_, i) => i + 1) // 1부터 20까지의 guideId
-      const responses = await Promise.all(
-        guideIds.map(async (guideId): Promise<ChatGuide | null> => {
-          const response = await postMessage(token, guideId)
-          if (response && response.data.chat.length > 0) {
-            return { guideId, chat: response.data.chat }
-          }
-          return null
-        }),
-      )
-
-      // 응답 중 null이 아닌 값만 필터링
-      const filteredChatGuides = responses.filter(
-        guide => guide !== null,
-      ) as ChatGuide[]
-      setChatGuides(filteredChatGuides)
+      const response = await getSelect(token)
+      if (response && response.data) {
+        setChatGuides(response.data)
+      }
     }
 
     fetchChatGuides()
@@ -64,7 +51,7 @@ const ChatGuideList = () => {
           onClick={() => handleGuideClick(guide.guideId)}
           style={{
             backgroundColor:
-              selectedGuide === guide.guideId ? '#f0f0f0' : 'white', // 선택된 가이드의 배경색을 연한 회색으로 설정
+              selectedGuide === guide.guideId ? '#f0f0f0' : 'white',
           }}
         >
           <L.PlaceBoxText>

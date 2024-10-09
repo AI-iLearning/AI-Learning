@@ -22,6 +22,7 @@ import KakaoRedirectHandle from './pages/LoginPage/components/KakaoRedirectHandl
 import Login from './pages/LoginPage/Login'
 import Start from './pages/LoginPage/Start'
 import MyInfoEdit from './pages/MyInfoEditPage/MyInfoEdit'
+import NotFound from './pages/NotFoundPage/NotFound'
 import PasswordChange1 from './pages/PasswordChangePage/PasswordChange1'
 import PasswordChange3 from './pages/PasswordChangePage/PasswordChange3'
 import PlaceDetail from './pages/PlaceDetailPage/PlaceDetail'
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '',

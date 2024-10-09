@@ -8,71 +8,12 @@ import { getSchedule, AISchedule } from '../../api/schedule/getSchedule'
 import { postEdit } from '../../api/schedule/postEdit'
 import authToken from '../../stores/authToken'
 import { getCityName } from '../../style/CityMapper'
-import BackButton from '../AISchedule1Page/components/BackButton/BackButton'
 
 const AISchedule3 = () => {
   const token = authToken.getAccessToken()
   const navigate = useNavigate()
   const [scheduleInfo, setScheduleInfo] = useState<AISchedule[]>([])
 
-  // const dummyScheduleData = [
-  //   {
-  //     date: '2024-10-24',
-  //     areacode: 36,
-  //     sigungucode: 3,
-  //     place: '불국사',
-  //   },
-  //   {
-  //     date: '2024-10-30',
-  //     areacode: 4,
-  //     sigungucode: 4,
-  //     place: '석굴암',
-  //   },
-  //   {
-  //     date: '2024-11-03',
-  //     areacode: 4,
-  //     sigungucode: 4,
-  //     place: '불국사',
-  //   },
-  //   {
-  //     date: '2024-11-07',
-  //     areacode: 2,
-  //     sigungucode: 1,
-  //     place: '가나다라마바사아자차카타파하',
-  //   },
-  //   {
-  //     date: '2024-11-10',
-  //     areacode: 3,
-  //     sigungucode: 3,
-  //     place: '남산타워',
-  //   },
-  //   {
-  //     date: '2024-11-15',
-  //     areacode: 5,
-  //     sigungucode: 5,
-  //     place: '한라산',
-  //   },
-  //   {
-  //     date: '2024-11-20',
-  //     areacode: 6,
-  //     sigungucode: 6,
-  //     place: '광안리 해수욕장',
-  //   },
-  //   {
-  //     date: '2024-11-25',
-  //     areacode: 7,
-  //     sigungucode: 7,
-  //     place: '동대문 디자인 플라자',
-  //   },
-  //   {
-  //     date: '2024-12-01',
-  //     areacode: 8,
-  //     sigungucode: 8,
-  //     place: '제주도 성산일출봉',
-  //   },
-  // ]
-
-  // API에서 스케줄 정보를 가져와 상태를 초기화
   useEffect(() => {
     const fetchSchedule = async () => {
       const response = await getSchedule(token)
@@ -89,19 +30,6 @@ const AISchedule3 = () => {
 
     fetchSchedule()
   }, [token])
-
-  //더미 데이터를 사용하여 상태를 초기화
-  // const getDummyScheduleData = async () => {
-  //   const updatedSchedule = dummyScheduleData.map(item => ({
-  //     ...item,
-  //     city: getCityName(item.areacode, item.sigungucode), // city 값을 설정
-  //   }))
-  //   setScheduleInfo(updatedSchedule)
-  // }
-
-  // useEffect(() => {
-  //   getDummyScheduleData()
-  // }, [])
 
   // 드래그 앤 드롭을 통해 장소만 교환하는 함수
   const moveSchedule = (dragIndex: number, hoverIndex: number) => {
@@ -128,17 +56,12 @@ const AISchedule3 = () => {
   }
 
   const handleComplete = () => {
-    // 변경된 일정 정보를 백엔드로 전송
-    console.log('Updated schedule:', scheduleInfo)
-
-    //백엔드 전달
-    const token = authToken.getAccessToken() // 토큰 가져오기
+    const token = authToken.getAccessToken()
 
     postEdit(token, scheduleInfo)
       .then(response => {
         if (response && response.data.message === 'Upload success') {
-          console.log('Upload successful:', response.data.message)
-          navigate('/calendar') // 업로드 성공 시 페이지 이동
+          navigate('/calendar')
         } else {
           console.error('Failed to upload edits.')
         }
@@ -150,14 +73,8 @@ const AISchedule3 = () => {
     navigate('/calendar')
   }
 
-  const handleGuideRequest = () => {
-    // 가이드 요청 로직
-    console.log('가이드 요청')
-  }
-
   return (
     <>
-      <BackButton />
       <L.ContainerTotal>
         <L.Container1>
           <L.Title>
@@ -175,8 +92,7 @@ const AISchedule3 = () => {
             moveSchedule={moveSchedule}
             handleDelete={handleDelete}
           />
-          <L.GuideRequestButton onClick={() => handleGuideRequest()}>
-            {/* <L.GradientIcon icon={peopleList16Filled} /> */}
+          <L.GuideRequestButton>
             <Icon icon='fluent:people-chat-16-filled' width='20' height='20' />
             해당 일정으로 가이드탭에서 가이드를 구할 수 있어요!
           </L.GuideRequestButton>

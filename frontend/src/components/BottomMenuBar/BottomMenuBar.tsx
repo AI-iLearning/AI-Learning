@@ -21,8 +21,8 @@ const icons = [
   {
     icon: 'icon-park-solid:five-star-badge',
     path: '/ranking-place',
-    alt: '순위',
-    label: '순위',
+    alt: '러닝픽',
+    label: '러닝픽',
   },
 
   {

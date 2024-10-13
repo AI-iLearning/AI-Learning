@@ -2,7 +2,7 @@
 import { Icon } from '@iconify/react'
 import heartIcon from '@iconify-icons/tabler/heart-filled'
 import React, { useEffect, useState, useRef } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import AccomodationList from './components/AccomodationList'
 import ChatDrawer from './components/ChatDrawer/ChatDrawer'
@@ -42,7 +42,8 @@ interface PlaceDetail {
 const PlaceDetail = () => {
   const token = authToken.getAccessToken()
   const location = useLocation()
-  const { date, firstimage } = location.state
+  const navigate = useNavigate()
+  const { date, firstimage } = location.state || {}
   const { contentid } = useParams<{ contentid: string }>()
   const { contenttypeid } = useParams<{ contenttypeid: string }>()
   const [placeDetail, setPlaceDetail] = useState<PlaceDetail | null>(null)
@@ -70,7 +71,6 @@ const PlaceDetail = () => {
   }, [menubarRef])
 
   useEffect(() => {
-    console.log(firstimage)
     fetchCommonPlaceInfo()
     fetchPlaceLikeTotal()
   }, [token, contentid])
@@ -141,7 +141,10 @@ const PlaceDetail = () => {
   }
 
   const handleLikeToggle = async () => {
-    if (!token || !contentid) return
+    if (!token || !contentid) {
+      navigate('/')
+      return
+    }
 
     try {
       await postLike(token, Number(contentid))
@@ -154,7 +157,10 @@ const PlaceDetail = () => {
   }
 
   const handleVistedCheckButton = async () => {
-    if (!token || !contentid) return
+    if (!token || !contentid) {
+      navigate('/')
+      return
+    }
 
     try {
       if (!isVisited) {

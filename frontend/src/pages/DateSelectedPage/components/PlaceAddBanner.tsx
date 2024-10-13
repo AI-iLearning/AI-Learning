@@ -25,17 +25,21 @@ const PlaceAddBanner: React.FC<PlaceAddBannerProps> = ({
   }
 
   const handleCompleteButton = async () => {
-    const successResponse = await postAddPlace(
-      token,
-      Number(contentid),
-      selectedDay,
-    )
-    if (successResponse) {
-      navigate('/calendar', {
-        state: {
-          selectedDate: selectedDay, // date는 추가된 날짜
-        },
-      })
+    if (token) {
+      const successResponse = await postAddPlace(
+        token,
+        Number(contentid),
+        selectedDay,
+      )
+      if (successResponse) {
+        navigate('/calendar', {
+          state: {
+            selectedDate: selectedDay, // date는 추가된 날짜
+          },
+        })
+      }
+    } else {
+      navigate('/')
     }
   }
 

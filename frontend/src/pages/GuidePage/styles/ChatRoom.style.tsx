@@ -51,7 +51,10 @@ export const Message = styled.div`
 
 export const ChatInputContainer = styled.div`
   display: flex;
-  padding: 0.5rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 30px;
   background-color: white;
   border-top: 1px solid #ddd;
 `

@@ -77,7 +77,10 @@ export const InputContainer = styled.div`
   left: 0;
   right: 0;
   display: flex;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 30px;
   border-top: 1px solid #ddd;
   background-color: #f9f9f9;
   z-index: 99;

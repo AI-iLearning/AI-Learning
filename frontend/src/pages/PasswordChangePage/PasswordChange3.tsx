@@ -3,9 +3,6 @@ import XButton from './components/XButton'
 import * as L from './styles/PasswordChange.style'
 
 const PasswordChange3 = () => {
-  //const location = useLocation()
-  //const { accessToken } = location.state || {} // accessToken 가져오기
-
   return (
     <L.Container>
       <XButton />

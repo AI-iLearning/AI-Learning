@@ -44,7 +44,6 @@ const CalendarInput = () => {
     } else {
       setEndDate(selectedDate)
     }
-    console.log(`Applied ${type} date: ${selectedDate}`)
     navigate('/ai-schedule-step1')
   }
 

@@ -159,7 +159,6 @@ const RegisterForm = ({ accessToken }: { accessToken?: string }) => {
           '숫자, 영문, 특수문자를 포함하여 최소 8자를 입력해주세요',
       }))
     } else {
-      console.log('hihi')
       setMyPassword(true)
       setIsValid({ ...isValid, c_password: true })
       setValidMessage(prev => ({

@@ -17,101 +17,6 @@ interface Level {
   isVisited: boolean
 }
 
-//const dummyImage = '/img/default_pic.png'
-// 더미데이터
-// const dummyData: Level[] = [
-//   {
-//     contentid: 1,
-//     contenttypeid: 12,
-//     areacode: 35,
-//     sigungucode: 1,
-//     place: '첨성대',
-//     firstimage: dummyImage,
-//     isVisited: false,
-//   },
-//   {
-//     contentid: 2,
-//     contenttypeid: 12,
-//     areacode: 35,
-//     sigungucode: 1,
-//     place: '동궁과 월지',
-//     firstimage: dummyImage,
-//     isVisited: false,
-//   },
-//   {
-//     contentid: 3,
-//     contenttypeid: 12,
-//     areacode: 1,
-//     sigungucode: 3,
-//     place: '경복궁',
-//     firstimage: dummyImage,
-//     isVisited: true,
-//   },
-//   {
-//     contentid: 4,
-//     contenttypeid: 12,
-//     areacode: 1,
-//     sigungucode: 3,
-//     place: '광화문',
-//     firstimage: dummyImage,
-//     isVisited: true,
-//   },
-//   {
-//     contentid: 5,
-//     contenttypeid: 14,
-//     areacode: 1,
-//     sigungucode: 2,
-//     place: '순천만 국가정원',
-//     firstimage: dummyImage,
-//     isVisited: false,
-//   },
-//   {
-//     contentid: 6,
-//     contenttypeid: 38,
-//     areacode: 31,
-//     sigungucode: 4,
-//     place: '수원 화성박물관',
-//     firstimage: dummyImage,
-//     isVisited: true,
-//   },
-//   {
-//     contentid: 7,
-//     contenttypeid: 28,
-//     areacode: 39,
-//     sigungucode: 1,
-//     place: '한라산 국립공원',
-//     firstimage: dummyImage,
-//     isVisited: false,
-//   },
-//   {
-//     contentid: 8,
-//     contenttypeid: 28,
-//     areacode: 39,
-//     sigungucode: 2,
-//     place: '성산일출봉',
-//     firstimage: dummyImage,
-//     isVisited: false,
-//   },
-//   {
-//     contentid: 9,
-//     contenttypeid: 12,
-//     areacode: 34,
-//     sigungucode: 2,
-//     place: '중원 탑평리 칠층석탑',
-//     firstimage: dummyImage,
-//     isVisited: true,
-//   },
-//   {
-//     contentid: 10,
-//     contenttypeid: 38,
-//     areacode: 31,
-//     sigungucode: 5,
-//     place: '대전 예술의 전당',
-//     firstimage: dummyImage,
-//     isVisited: true,
-//   },
-// ]
-
 const EachLevel: React.FC = () => {
   const [levelPlaces, setLevelPlaces] = useState<Level[]>([])
 
@@ -139,11 +44,6 @@ const EachLevel: React.FC = () => {
       setLevelPlaces([])
     }
   }
-
-  //더미데이터 이용
-  // useEffect(() => {
-  //   setLevelPlaces(dummyData)
-  // }, [level, token])
 
   const notVisited = levelPlaces.filter(place => !place.isVisited)
   const visited = levelPlaces.filter(place => place.isVisited)

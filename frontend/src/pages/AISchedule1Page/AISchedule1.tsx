@@ -11,7 +11,6 @@ const AISchedule1: React.FC = () => {
   const {
     startDate,
     endDate,
-    dates,
     location,
     travelStyle,
     frequency,
@@ -51,14 +50,6 @@ const AISchedule1: React.FC = () => {
       updateDates() // isScheduleConfirmed가 false일 때만 dates를 업데이트
     }
   }, [startDate, endDate, frequency, updateDates])
-
-  useEffect(() => {
-    if (!isScheduleConfirmed) {
-      console.log('isScheduleConfirmed = false ')
-    } else {
-      console.log('isScheduleConfirmed = true')
-    }
-  }, [isScheduleConfirmed]) // isScheduleConfirmed가 변경될 때마다 실행
 
   const handleLocationClick = (loc: string) => {
     if (loc === '전국') {
@@ -103,7 +94,6 @@ const AISchedule1: React.FC = () => {
   const handleFrequencyChange = (newFrequency: string) => {
     setFrequency(newFrequency)
     updateDates() // 빈도 변경 후 날짜 업데이트
-    console.log('Update date')
   }
 
   const handleDayOfWeekChange = (newDayOfWeek: string) => {
@@ -112,17 +102,6 @@ const AISchedule1: React.FC = () => {
   }
 
   const handleComplete = () => {
-    const { startDate, endDate, frequency, dates, location, travelStyle } =
-      useScheduleStore.getState()
-    console.log('Current Schedule State:', {
-      startDate,
-      endDate,
-      frequency,
-      dates,
-      location,
-      travelStyle,
-    })
-
     navigate('/ai-schedule-step2')
   }
 
@@ -130,15 +109,6 @@ const AISchedule1: React.FC = () => {
     navigate(`/calendarInput?type=${type}`)
   }
   const handleCalendarIconClick2 = () => {
-    console.log('Current Schedule State:', {
-      startDate,
-      endDate,
-      frequency,
-      dayOfWeek,
-      dates,
-      location,
-      travelStyle,
-    })
     navigate(`/calendarCycle?type=cycle`)
   }
 

@@ -28,7 +28,6 @@ const Pattern: React.FC = () => {
         try {
           setIsLoading(true)
           const data = await getPattern(token)
-          console.log('Fetched data:', data)
           setPatternData(data)
         } catch (error) {
           console.error('Failed to fetch pattern:', error)

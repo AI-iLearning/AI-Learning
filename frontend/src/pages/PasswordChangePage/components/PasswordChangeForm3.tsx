@@ -9,9 +9,7 @@ const PasswordChangeForm3 = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const email = location.state?.email
-  const nickname = location.state?.nickname // 닉네임 가져오기
-
-  console.log('Received state:', location.state) // 디버깅용 로그 추가
+  const nickname = location.state?.nickname
 
   const [signupForm, setSignupForm] = useState({
     password: '',
@@ -79,7 +77,6 @@ const PasswordChangeForm3 = () => {
     e.preventDefault()
     if (isValid.password && isValid.checkedPassword) {
       try {
-        console.log(email, signupForm.password)
         const response = await postResetPassword(email, signupForm.password)
         if (response?.data.message === 'Success Response') {
           setAlertMessage('비밀번호가 성공적으로 변경되었습니다.')
@@ -121,9 +118,6 @@ const PasswordChangeForm3 = () => {
             placeholder='영문자, 숫자, 특수문자 포함 8~20자리'
             required
           />
-          {/* <L.ValidationMessage error={!isValid.password}>
-            {validMessage.passwordMessage}
-          </L.ValidationMessage> */}
           <L.Input
             type='password'
             name='checkedPassword'

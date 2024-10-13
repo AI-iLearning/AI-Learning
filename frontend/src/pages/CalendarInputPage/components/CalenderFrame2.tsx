@@ -7,17 +7,15 @@ import * as L from '../styles/CalendarFrame.style'
 interface CalendarFrameProps {
   selectedDates: string[]
   setSelectedDates: (date: string[]) => void
-  // setSelectedDate: (date: string) => void
   calendarRange: { start: Date; end: Date }
 }
 
 const CalendarFrame2: React.FC<CalendarFrameProps> = ({
   selectedDates,
-  // setSelectedDate,
   setSelectedDates,
   calendarRange,
 }) => {
-  const { dates: storedDates } = useScheduleStore() // Zustand에서 상태 가져오기
+  const { dates: storedDates } = useScheduleStore()
   const [selectedDatesState, setSelectedDatesState] =
     useState<string[]>(storedDates)
 
@@ -42,10 +40,6 @@ const CalendarFrame2: React.FC<CalendarFrameProps> = ({
     return `${year}-${formattedMonth}-${formattedDay}`
   }
 
-  // const handleDayClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   const clickedDay = event.currentTarget.title
-  //   setSelectedDates(clickedDay)
-  // }
   const handleDayClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const clickedDay = event.currentTarget.title
     setSelectedDatesState(prevDates => {
@@ -202,7 +196,6 @@ const CalendarFrame2: React.FC<CalendarFrameProps> = ({
 
 CalendarFrame2.propTypes = {
   selectedDates: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  // setSelectedDate: PropTypes.func.isRequired,
   calendarRange: PropTypes.shape({
     start: PropTypes.instanceOf(Date).isRequired,
     end: PropTypes.instanceOf(Date).isRequired,

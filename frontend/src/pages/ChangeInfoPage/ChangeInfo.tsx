@@ -37,7 +37,6 @@ const ChangeInfo = () => {
   useEffect(() => {
     if (userInfo) {
       setYear(userInfo.birth)
-      console.log(userInfo)
       const cityInfo = getCityAndSigunguName(
         userInfo.areacode,
         userInfo.sigungucode,

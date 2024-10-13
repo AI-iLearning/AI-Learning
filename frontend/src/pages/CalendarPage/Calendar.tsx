@@ -35,9 +35,7 @@ const Calendar: React.FC = () => {
     resetDailyCheck,
   } = useWeatherAlert()
 
-  const { futureAlerts, setFutureAlerts } = useAlertStore()
-  console.log(futureAlerts)
-
+  const { setFutureAlerts } = useAlertStore()
   const today = new Date()
   const cyear = today.getFullYear()
   const cmonth = String(today.getMonth() + 1).padStart(2, '0')
@@ -77,11 +75,6 @@ const Calendar: React.FC = () => {
     setLastCalendarVisit(new Date().toISOString())
     resetDailyCheck()
     fetchAlertPlaces()
-
-    console.log(
-      'hasCheckedAlertToday:',
-      useWeatherAlert.getState().hasCheckedAlertToday,
-    )
   }, [setLastCalendarVisit])
 
   // selectedDate가 존재하면 그 날짜의 Drawer를 열기 위한 로직
@@ -192,16 +185,7 @@ const Calendar: React.FC = () => {
   const handleClosePopup = () => {
     setShowPopup(false)
     setHasCheckedAlertToday(true)
-
-    console.log(
-      'hasCheckedAlertToday:',
-      useWeatherAlert.getState().hasCheckedAlertToday,
-    )
   }
-
-  useEffect(() => {
-    console.log('showPopup:', showPopup)
-  }, [showPopup])
 
   return (
     <>

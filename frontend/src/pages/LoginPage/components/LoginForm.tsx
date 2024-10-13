@@ -62,14 +62,12 @@ const LoginForm = () => {
           value={email}
           onChange={handleEmailChange}
           placeholder='이메일을 입력해주세요'
-          //required
         />
         <L.Input
           type='password'
           value={password}
           onChange={handlePasswordChange}
           placeholder='비밀번호를 입력해주세요'
-          //required
         />
         <L.LoginButton type='submit'>로그인</L.LoginButton>
       </L.Form>

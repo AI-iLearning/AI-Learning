@@ -16,13 +16,7 @@ const kakao = (window as any).Kakao
 
 const KakaoRedirectHandle = () => {
   const navigate = useNavigate()
-  const { isLoading, data } = useAllPlace()
-
-  useEffect(() => {
-    if (data) {
-      console.log('Fetched places:', data)
-    }
-  }, [data])
+  const { isLoading } = useAllPlace()
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams
@@ -40,7 +34,6 @@ const KakaoRedirectHandle = () => {
         },
       )
       .then(async res => {
-        console.log(res)
         const accessToken = res.data.access_token
         const refreshToken = res.data.refresh_token
         kakao.Auth.setAccessToken(accessToken)
@@ -59,7 +52,6 @@ const KakaoRedirectHandle = () => {
     })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then(async (response: any) => {
-        console.log(response)
         const email = response.kakao_account?.email
         const callbackResponse = await kakaoCallback(accessToken)
         if (callbackResponse?.data.userExists) {

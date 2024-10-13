@@ -74,16 +74,12 @@ const Rank: React.FC = () => {
           visitedList.map((place: VisitedPlace) => place.contentid),
         ) // Set 생성
         setVisitedPlaces(visitedIds)
-        console.log('방문한 장소 배열', visitedIds)
       }
     }
 
     fetchPlaces()
     fetchVisitedPlaces()
-
-    // hasCheckedAlertToday를 false로 리셋
     setHasCheckedAlertToday(false)
-    console.log('hasCheckedAlertToday 상태가 false로 리셋되었습니다.')
   }, [])
 
   return (

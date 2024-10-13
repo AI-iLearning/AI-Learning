@@ -4,21 +4,11 @@ import React, { useState } from 'react'
 import ChatGuideList from './components/ChatGuideList'
 import GuideBox from './components/GuideBox'
 import * as L from './styles/Guide.style'
-import { getPattern } from '../../api/profile/getPattern'
 import { useUser } from '../../hooks/useUser'
-import authToken from '../../stores/authToken'
 
 const Guide: React.FC = () => {
-  const token = authToken.getAccessToken()
   const { data: userInfo } = useUser()
   const [activeTab, setActiveTab] = useState(0)
-
-  const handleAPITest = async () => {
-    if (token) {
-      const successResponse = await getPattern(token)
-      console.log(successResponse)
-    }
-  }
 
   const handleTabClick = (index: number) => {
     setActiveTab(index)
@@ -28,7 +18,7 @@ const Guide: React.FC = () => {
     <L.AppContainer>
       <L.Title>
         <h1>
-          <L.Nickname onClick={handleAPITest}>{userInfo?.nickname}</L.Nickname>
+          <L.Nickname>{userInfo?.nickname}</L.Nickname>
           님 일정에 어울리는
           <br />
           가이드 분들이에요!

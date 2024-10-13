@@ -40,8 +40,6 @@ const AddPlace: React.FC = () => {
   const { date: dateParam } = useParams<{ date: string }>()
   const date: string | null = dateParam ?? null
 
-  console.log('Date:', date)
-
   const [recommendedPlaces, setRecommendedPlaces] = useState<RecommendPlace[]>(
     [],
   )
@@ -87,7 +85,6 @@ const AddPlace: React.FC = () => {
         setRecommendedPlaces([])
       }
     } catch (error) {
-      console.error('Failed to fetch recommended places:', error)
       setRecommendedPlaces([])
     } finally {
       setIsLoading(false)
@@ -112,7 +109,6 @@ const AddPlace: React.FC = () => {
     e.stopPropagation()
 
     if (!date) {
-      console.error('Date is null or undefined.')
       return
     }
 
@@ -174,7 +170,6 @@ const AddPlace: React.FC = () => {
       }
 
       setRecommendedPlaces(fetchedGpsPlaces)
-      console.log('Places fetched by content type:', fetchedGpsPlaces)
     } catch (error) {
       console.error('Error fetching places by content type:', error)
     } finally {
@@ -230,9 +225,8 @@ const AddPlace: React.FC = () => {
               <Loading />
             </NoPlaceContainer>
           ) : allPlacesError ? (
-            <div>Error occurred</div> // Show error message if an error occurs
+            <div>Error occurred</div>
           ) : searchInput ? (
-            // If search input is present, show filtered places
             filteredPlaces.length > 0 ? (
               <L.PlacesList>
                 {filteredPlaces.map((place, index) => (

@@ -66,7 +66,6 @@ const MiddleMenuBar: React.FC<MiddleMenuBarProps> = ({
 
       try {
         Kakao.init(process.env.REACT_APP_KAKAO_JS_SDK_KEY)
-        console.log('Kakao SDK initialized:', Kakao.isInitialized())
       } catch (error) {
         console.error('Kakao SDK initialization failed:', error)
       }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // useNavigate 추가
+import { useNavigate } from 'react-router-dom'
 
 import MyLevel from './components/MyLevel'
 import PlaceList from './components/PlaceList'
@@ -10,10 +10,10 @@ import InfoBanner from '../../components/InfoBanner/InfoBanner'
 const Profile = () => {
   const [showBanner, setShowBanner] = useState(true)
   const bannerText = '나의 교육 여행 패턴 및 방향성을 알고 싶나요?'
-  const navigate = useNavigate() // useNavigate 훅 사용
+  const navigate = useNavigate()
 
   const handleBannerClick = () => {
-    navigate('/pattern') // Pattern 페이지로 이동
+    navigate('/pattern')
   }
 
   return (
@@ -26,7 +26,7 @@ const Profile = () => {
             <InfoBanner
               text={bannerText}
               onClose={() => setShowBanner(false)}
-              onClick={handleBannerClick} // 클릭 핸들러 추가
+              onClick={handleBannerClick}
             />
           )}
         </L.BannerContainer>

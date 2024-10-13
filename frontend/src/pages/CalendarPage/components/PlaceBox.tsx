@@ -42,7 +42,6 @@ const PlaceBox: React.FC<PlaceBoxProps> = ({
     })
 
     updateInfo(updatedInfo)
-    console.log('Updated Info:', updatedInfo)
   }
 
   const handleTouchStart = (e: React.TouchEvent) => {

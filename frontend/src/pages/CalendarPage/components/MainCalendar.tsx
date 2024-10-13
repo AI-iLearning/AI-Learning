@@ -13,6 +13,8 @@ interface MainCalendarProps {
   year: number
   month: number
   selectedDate?: string
+  drawerOpen: boolean
+  setDrawerOpen: (open: boolean) => void
 }
 
 interface Holiday {
@@ -24,6 +26,8 @@ const MainCalendar: React.FC<MainCalendarProps> = ({
   year,
   month,
   selectedDate,
+  drawerOpen,
+  setDrawerOpen,
 }) => {
   const token = authToken.getAccessToken()
   const today = new Date()
@@ -41,7 +45,6 @@ const MainCalendar: React.FC<MainCalendarProps> = ({
   const [schedule, setSchedule] = useState<CalendarSchedule[]>([])
   const [holidays, setHolidays] = useState<Holiday[]>([])
   const [selectedDay, setSelectedDay] = useState<string>(selectedDate || '')
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(!!selectedDate)
 
   const fetchHolidayInfo = async () => {
     try {
@@ -276,6 +279,8 @@ MainCalendar.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
   selectedDate: PropTypes.string,
+  drawerOpen: PropTypes.bool.isRequired,
+  setDrawerOpen: PropTypes.func.isRequired,
 }
 
 export default MainCalendar

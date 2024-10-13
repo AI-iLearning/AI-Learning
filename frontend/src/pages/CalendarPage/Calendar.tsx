@@ -10,6 +10,7 @@ import { postTimelineDay } from '../../api/calendar/postTimelineDay'
 import { getAlertPlace, AlertPlace } from '../../api/profile/getAlertList'
 import IndoorAlertPopUp from '../../components/AlertPopUp/IndoorAlertPopUp/IndoorAlertPopUp'
 import useLikeList from '../../hooks/useLikeList'
+import useLockBodyScroll from '../../hooks/useLockBodyScroll'
 import { useUser } from '../../hooks/useUser'
 import useVisitedList from '../../hooks/useVisitedList'
 import authToken from '../../stores/authToken'
@@ -23,6 +24,9 @@ const Calendar: React.FC = () => {
   const location = useLocation()
   const selectedDate = location.state?.selectedDate || null
   const [showPopup, setShowPopup] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
+  useLockBodyScroll(drawerOpen)
 
   const { refetch: refetchUser } = useUser()
   const { refetch: refetchLikeList } = useLikeList()
@@ -149,29 +153,33 @@ const Calendar: React.FC = () => {
   }
 
   const handleSwipeLeft = () => {
-    if (
-      currentDate.year === today.getFullYear() + 1 &&
-      currentDate.month === 12
-    ) {
-      return
-    }
+    if (!drawerOpen) {
+      if (
+        currentDate.year === today.getFullYear() + 1 &&
+        currentDate.month === 12
+      ) {
+        return
+      }
 
-    if (currentDate.month === 12) {
-      setCurrentDate({ year: currentDate.year + 1, month: 1 })
-    } else {
-      setCurrentDate({ year: currentDate.year, month: currentDate.month + 1 })
+      if (currentDate.month === 12) {
+        setCurrentDate({ year: currentDate.year + 1, month: 1 })
+      } else {
+        setCurrentDate({ year: currentDate.year, month: currentDate.month + 1 })
+      }
     }
   }
 
   const handleSwipeRight = () => {
-    if (currentDate.year === 2024 && currentDate.month === 1) {
-      return
-    }
+    if (!drawerOpen) {
+      if (currentDate.year === 2024 && currentDate.month === 1) {
+        return
+      }
 
-    if (currentDate.month === 1) {
-      setCurrentDate({ year: currentDate.year - 1, month: 12 })
-    } else {
-      setCurrentDate({ year: currentDate.year, month: currentDate.month - 1 })
+      if (currentDate.month === 1) {
+        setCurrentDate({ year: currentDate.year - 1, month: 12 })
+      } else {
+        setCurrentDate({ year: currentDate.year, month: currentDate.month - 1 })
+      }
     }
   }
 
@@ -217,6 +225,8 @@ const Calendar: React.FC = () => {
           year={currentDate.year}
           month={currentDate.month}
           selectedDate={selectedDate}
+          drawerOpen={drawerOpen}
+          setDrawerOpen={setDrawerOpen}
         />
       </div>
       {showPopup && !hasCheckedAlertToday && (

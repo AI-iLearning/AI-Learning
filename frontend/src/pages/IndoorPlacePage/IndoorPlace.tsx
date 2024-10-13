@@ -56,10 +56,7 @@ const IndoorPlace: React.FC = () => {
   const date = dateParam || ''
   const contentid = contentidParam || ''
 
-  console.log('Date:', date)
-
   const [indoorPlaces, setIndoorPlaces] = useState<RecommendPlace[]>([])
-
   const [filteredPlaces, setFilteredPlaces] = useState<RecommendPlace[]>([]) // 필터링된 장소 상태
   const [isLoading, setIsLoading] = useState(false)
   const [searchInput, setSearchInput] = useState('')
@@ -73,28 +70,19 @@ const IndoorPlace: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!token || !date || !contentid) {
-        console.error('Token, date, or contentid is missing', {
-          token,
-          date,
-          contentid,
-        })
-        return
-      }
+      if (!token || !date || !contentid) return
 
       setIsLoading(true)
       try {
         // 일정 가져오기
         const scheduleResponse = await postTimelineDay(token, date)
         if (scheduleResponse && scheduleResponse.data) {
-          console.log('Received daySchedule:', scheduleResponse.data)
           setDaySchedule(scheduleResponse.data)
         } else {
           console.error('Failed to fetch day schedule or received empty data')
         }
 
         // 실내 장소 가져오기
-        console.log('contentid:', contentid, 'date:', date)
         const indoorResponse = await postIndoor(token, date, Number(contentid))
         if (indoorResponse && indoorResponse.data) {
           setIndoorPlaces(indoorResponse.data)
@@ -110,13 +98,7 @@ const IndoorPlace: React.FC = () => {
   }, [token, date, contentid, setDaySchedule])
 
   const findOriginalPlace = () => {
-    if (!daySchedule || !daySchedule.info || !contentid) {
-      console.log('daySchedule or contentid is null/undefined', {
-        daySchedule,
-        contentid,
-      })
-      return null
-    }
+    if (!daySchedule || !daySchedule.info || !contentid) return null
 
     const originalPlace = daySchedule.info.find(
       place =>
@@ -124,13 +106,7 @@ const IndoorPlace: React.FC = () => {
         place.contentid.toString() === Number(contentid).toString(),
     )
 
-    if (!originalPlace) {
-      console.log('Original place not found', {
-        contentid,
-        dayScheduleInfo: daySchedule.info,
-      })
-      return null
-    }
+    if (!originalPlace) return null
 
     return originalPlace
   }
@@ -165,31 +141,17 @@ const IndoorPlace: React.FC = () => {
     newPlace: RecommendPlace,
     originalPlace: PlacePreviewInfo | null,
   ) => {
-    if (!date || !daySchedule || !originalPlace) {
-      console.error(
-        'Date, day schedule, or originalPlace is null or undefined.',
-      )
-      return
-    }
+    if (!date || !daySchedule || !originalPlace) return
 
-    // Zustand 스토어 업데이트
     const updatedFutureAlerts = futureAlerts.filter(
       alert => alert.contentid !== originalPlace.contentid,
     )
     setFutureAlerts(updatedFutureAlerts)
 
-    // 업데이트된 Zustand 스토어의 futureAlerts 값을 콘솔에 출력
-    console.log(
-      'Updated Zustand futureAlerts:',
-      useAlertStore.getState().futureAlerts,
-    )
-
-    const response = await alertDelete(token, {
+    await alertDelete(token, {
       date: date, // 원래 장소의 날짜
       contentid: originalPlace.contentid, // 원래 장소의 contentid
     })
-
-    console.log('Alert deleted response:', response)
 
     try {
       const indexToReplace = daySchedule.info.findIndex(
@@ -227,10 +189,6 @@ const IndoorPlace: React.FC = () => {
       const response = await postTimelineFix(token, updatedSchedule)
 
       if (response && response.data) {
-        console.log(
-          `장소가 ${originalPlace?.place || '원래 장소'}에서 ${newPlace.place}로 변경되었습니다.`,
-        )
-
         navigate('/calendar', {
           state: {
             selectedDate: date,
@@ -286,7 +244,6 @@ const IndoorPlace: React.FC = () => {
       }
 
       setIndoorPlaces(fetchedGpsPlaces)
-      console.log('Places fetched by content type:', fetchedGpsPlaces)
     } catch (error) {
       console.error('Error fetching places by content type:', error)
     } finally {

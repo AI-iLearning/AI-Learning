@@ -31,14 +31,10 @@ const PasswordChangeForm = () => {
       )
 
       if (response?.data.isCorrect) {
-        console.log('Navigating with:', {
-          email: signupForm.email,
-          nickname: signupForm.nickname,
-        }) // 디버깅용 로그 추가
         navigate('/password-change3', {
           state: {
             email: signupForm.email,
-            nickname: signupForm.nickname, // 닉네임도 함께 전달
+            nickname: signupForm.nickname,
           },
         })
       } else {

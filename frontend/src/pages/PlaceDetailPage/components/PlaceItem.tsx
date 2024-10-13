@@ -11,13 +11,9 @@ interface PlaceBoxItemProps {
 }
 
 const PlaceItem: React.FC<PlaceBoxItemProps> = ({ item }) => {
-  const handleClick = () => {
-    //
-  }
-
   return (
     <>
-      <L.PlaceBoxContainer onClick={handleClick}>
+      <L.PlaceBoxContainer>
         <L.PlaceBoxText>
           <L.PlaceBoxTitle>{item.title}</L.PlaceBoxTitle>
           <L.PlaceBoxCity>{item.addr1}</L.PlaceBoxCity>

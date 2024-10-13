@@ -31,7 +31,7 @@ const ProfileSection = () => {
     if (response) console.log(response.data)
   }
   const handleAlertClick = () => {
-    navigate('/alert') // AlertPage로 이동
+    navigate('/alert')
   }
 
   return (

@@ -72,21 +72,16 @@ const CalendarCycle = () => {
   useEffect(() => {
     const currentDates = useScheduleStore.getState().dates
     setLoadedDates(currentDates)
-    console.log(currentDates)
   }, [dates])
 
   const handleApplyDate = () => {
     if (type === 'start') {
       setStartDate(selectedDate)
-      console.log(`Applied ${type} date: ${selectedDate}`)
     } else if (type === 'end') {
       setEndDate(selectedDate)
-      console.log(`Applied ${type} date: ${selectedDate}`)
     } else if (type === 'cycle') {
       setDates(loadedDates)
       const currentDates = useScheduleStore.getState().dates
-      console.log('Current dates in Zustand:', currentDates)
-      console.log(`Applied ${type} date: ${loadedDates}`)
 
       // 특정 조건에 따라 팝업 띄우기
       if (!currentDates || currentDates.length === 0) {
@@ -119,14 +114,12 @@ const CalendarCycle = () => {
   //날짜 선택이나 해제 시 - 각 상태 반영
   const setSelectedDates = (newDates: string[]) => {
     setLoadedDates(newDates)
-    //console.log('함수 setSelectedDates:', { newDates })
   }
 
   const handleAlertConfirm = () => {
-    setIsAlertOpen(false) // 팝업을 닫음
+    setIsAlertOpen(false)
   }
 
-  //배너 문구
   const bannerText =
     '원하는 날짜를 선택하세요! 이미 선택된 날짜를 다시 누르면 해제됩니다!'
   return (

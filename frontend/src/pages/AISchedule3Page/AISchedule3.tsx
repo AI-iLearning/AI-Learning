@@ -23,8 +23,6 @@ const AISchedule3 = () => {
           city: getCityName(item.areacode, item.sigungucode), // city 값을 설정
         }))
         setScheduleInfo(updatedSchedule)
-      } else {
-        console.error('Failed to fetch schedule data.')
       }
     }
 
@@ -46,7 +44,6 @@ const AISchedule3 = () => {
     updatedSchedule[hoverIndex].city = tempCity
 
     setScheduleInfo(updatedSchedule)
-    console.log('바뀐 일정들', updatedSchedule)
   }
 
   const handleDelete = (index: number) => {

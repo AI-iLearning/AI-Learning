@@ -58,7 +58,6 @@ const DateDrawer: React.FC<DateDrawerProps> = ({ date }) => {
   const handleDelete = (index: number) => {
     if (daySchedule) {
       const updatedInfo = daySchedule.info.filter((_, i) => i !== index)
-      console.log(updatedInfo)
       const updatedSchedule = { ...daySchedule, info: updatedInfo }
       setDaySchedule(updatedSchedule)
       mutation.mutate(updatedSchedule)
@@ -70,7 +69,6 @@ const DateDrawer: React.FC<DateDrawerProps> = ({ date }) => {
       const updatedInfo = daySchedule.info.filter(
         (_, i) => !selectedIndexes.includes(i),
       )
-      console.log(updatedInfo)
       const updatedSchedule = { ...daySchedule, info: updatedInfo }
       setDaySchedule(updatedSchedule)
       mutation.mutate(updatedSchedule)
@@ -125,7 +123,6 @@ const DateDrawer: React.FC<DateDrawerProps> = ({ date }) => {
   const handleEditToggle = () => {
     if (isEditing) {
       if (daySchedule) {
-        console.log(daySchedule)
         mutation.mutate(daySchedule)
       }
     }

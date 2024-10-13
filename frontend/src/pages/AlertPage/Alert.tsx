@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom'
 import * as S from './styles/Alert.style'
 import { getAlertPlace, AlertPlace } from '../../api/profile/getAlertList'
 import BackButton from '../../components/BackButton/BackButton'
-import Loading from '../../components/Loading/Loading' // Loading 컴포넌트 import
+import Loading from '../../components/Loading/Loading'
 import authToken from '../../stores/authToken'
 import { useWeatherAlert } from '../../stores/useWeatherAlert'
 
 const Alert: React.FC = () => {
   const navigate = useNavigate()
   const [alerts, setAlerts] = useState<AlertPlace[]>([])
-  const [isLoading, setIsLoading] = useState(true) // Loading 상태 추가
+  const [isLoading, setIsLoading] = useState(true)
 
   const getDateDifference = (dateString: string) => {
     const today = new Date()
@@ -45,84 +45,24 @@ const Alert: React.FC = () => {
     navigate(`/indoorplace/${date}/${contentid}`, { state: { date } })
   }
 
-  //더미데이터
-  //   const dummyData: AlertPlace[] = [
-  //     {
-  //       date: '2024-09-25',
-  //       weather: 1,
-  //       contentid: 126508,
-  //       place: '경복궁',
-  //       firstimage: '/img/default_pic.png',
-  //       contenttypeid: 12,
-  //       areacode: 1,
-  //       sigungucode: 1,
-  //     },
-  //     {
-  //       date: '2024-09-26',
-  //       weather: 3,
-  //       contentid: 67890,
-  //       place: '남산타워',
-  //       firstimage: '/img/default_pic.png',
-  //       contenttypeid: 14,
-  //       areacode: 1,
-  //       sigungucode: 2,
-  //     },
-  //     {
-  //       date: '2024-09-28',
-  //       weather: 4,
-  //       contentid: 3070550,
-  //       place: '감천계곡',
-  //       firstimage: '/img/default_pic.png',
-  //       contenttypeid: 15,
-  //       areacode: 1,
-  //       sigungucode: 3,
-  //     },
-  //     {
-  //       date: '2024-09-30',
-  //       weather: 2,
-  //       contentid: 3030149,
-  //       place: '포항 해상스카이워크',
-  //       firstimage: '/img/default_pic.png',
-  //       contenttypeid: 16,
-  //       areacode: 1,
-  //       sigungucode: 4,
-  //     },
-  //     {
-  //       date: '2024-10-01',
-  //       weather: 2,
-  //       contentid: 2715601,
-  //       place: '가덕도',
-  //       firstimage: '/img/default_pic.png',
-  //       contenttypeid: 16,
-  //       areacode: 1,
-  //       sigungucode: 4,
-  //     },
-  //   ]
-
   useEffect(() => {
     const fetchAlerts = async () => {
       const token = authToken.getAccessToken()
-      setIsLoading(true) // 데이터 로딩 시작
+      setIsLoading(true)
       try {
         const response = await getAlertPlace(token)
         if (response && response.data) {
           setAlerts(response.data)
-          console.log('알림 리스트 받아오기 성공', response.data)
         }
       } catch (error) {
         console.error('Failed to fetch alerts:', error)
       } finally {
-        setIsLoading(false) // 데이터 로딩 완료
+        setIsLoading(false)
       }
     }
 
     fetchAlerts()
   }, [useWeatherAlert().lastCalendarVisit])
-
-  //   //더미데이터 사용
-  //   useEffect(() => {
-  //     setAlerts(dummyData)
-  //   }, [])
 
   const getWeatherIcon = (weather: number) => {
     switch (weather) {
@@ -168,24 +108,8 @@ const Alert: React.FC = () => {
     }
   }
 
-  //   useEffect(() => {
-  //     const fetchAlerts = async () => {
-  //       const token = authToken.getAccessToken()
-  //       try {
-  //         const response = await getAlertPlace(token)
-  //         if (response && response.data) {
-  //           setAlerts(response.data)
-  //         }
-  //       } catch (error) {
-  //         console.error('Failed to fetch alerts:', error)
-  //       }
-  //     }
-
-  //     fetchAlerts()
-  //   }, [])
-
   if (isLoading) {
-    return <Loading /> // 로딩 중일 때 Loading 컴포넌트 표시
+    return <Loading />
   }
 
   return (

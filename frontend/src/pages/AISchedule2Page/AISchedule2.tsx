@@ -20,14 +20,6 @@ const AISchedule2 = () => {
   }))
 
   const handleSubmitAIInput = async () => {
-    console.log('Received Schedule State from Zustand:', {
-      startDate,
-      endDate,
-      dates,
-      location,
-      travelStyle,
-      description,
-    })
     setLoading(true)
 
     if (token && startDate && endDate) {
@@ -45,16 +37,14 @@ const AISchedule2 = () => {
         setLoading(false)
         navigate('/ai-schedule-step3')
       } else {
-        // Handle error and stop loading
         setLoading(false)
-        // You can add an error message or alert here
       }
     }
   }
 
   return (
     <>
-      {loading ? ( // Display loading indicator if loading is true
+      {loading ? (
         <Loading />
       ) : (
         <>
@@ -78,7 +68,7 @@ const AISchedule2 = () => {
           </L.Container>
         </>
       )}
-      {!loading && ( // Only show the button when not loading
+      {!loading && (
         <L.BottomButton onClick={handleSubmitAIInput}>완료</L.BottomButton>
       )}
     </>

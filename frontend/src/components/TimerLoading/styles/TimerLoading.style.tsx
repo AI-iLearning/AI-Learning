@@ -21,7 +21,7 @@ export const LoadingContainer = styled.div`
 
 export const LoadingText = styled.div`
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-weight: 600;
 `
 
@@ -44,7 +44,7 @@ export const TimerText = styled.div`
   display: flex;
   align-items: center; // 아이콘과 텍스트 정렬
   font-size: 30px; // 원하는 폰트 크기로 조정
-  margin: 20px 0; // 위아래 여백 조정
+  margin: 30px 0; // 위아래 여백 조정
   color: #333; // 원하는 색상으로 조정
 `
 

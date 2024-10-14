@@ -7,7 +7,6 @@ import {
   DotsWrapper,
   Dot,
   TimerText,
-  TimerIcon,
 } from './styles/TimerLoading.style'
 
 const TimerLoading: React.FC<{ responseReceived: boolean }> = ({
@@ -46,7 +45,6 @@ const TimerLoading: React.FC<{ responseReceived: boolean }> = ({
     <LoadingContainer>
       <LoadingText>AI가 일정을 생성 중이에요</LoadingText>
       <TimerText>
-        <TimerIcon />
         {formatTimeLeft(timeLeft)} {/* 남은 시간을 분과 초로 표시 */}
       </TimerText>
       <DotsWrapper>

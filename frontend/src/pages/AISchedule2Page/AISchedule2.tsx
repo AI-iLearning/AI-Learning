@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import * as L from './styles/AISchedule2.style'
 import { makeSchedule } from '../../api/schedule/postMakeSchedule'
-import Loading from '../../components/Loading/Loading'
+import TimerLoading from '../../components/TimerLoading/TimerLoading'
 import authToken from '../../stores/authToken'
 import { useScheduleStore } from '../../stores/useScheduleStore'
 import BackButton from '../AISchedule1Page/components/BackButton/BackButton'
@@ -18,6 +18,7 @@ const AISchedule2 = () => {
     description: state.description,
     setDescription: state.setDescription,
   }))
+  const [responseReceived, setResponseReceived] = useState(false) // 응답 여부 상태 추가
 
   const handleSubmitAIInput = async () => {
     setLoading(true)
@@ -34,6 +35,7 @@ const AISchedule2 = () => {
       )
 
       if (successResponse && successResponse.data) {
+        setResponseReceived(true) // 응답이 도착했음을 설정
         setLoading(false)
         navigate('/ai-schedule-step3')
       } else {
@@ -45,7 +47,7 @@ const AISchedule2 = () => {
   return (
     <>
       {loading ? (
-        <Loading />
+        <TimerLoading responseReceived={responseReceived} /> // 응답 여부를 TimerLoading에 전달
       ) : (
         <>
           <BackButton />

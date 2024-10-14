@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
   font-family: 'Pretendard';
@@ -100,4 +100,40 @@
     url('https://cdn.jsdelivr.net/gh/webfontworld/pretendard/Pretendard-Black.ttf')
       format('truetype');
   font-display: swap;
+} */
+
+/* Import the variable version of Pretendard */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+/* Global reset and font setup */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Pretendard Variable', sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* Usage examples for different font weights */
+h1 {
+  font-weight: 900; /* Black */
+}
+
+h2 {
+  font-weight: 700; /* Bold */
+}
+
+h3 {
+  font-weight: 600; /* SemiBold */
+}
+
+p {
+  font-weight: 400; /* Regular */
+}
+
+small {
+  font-weight: 300; /* Light */
+}
+
+em {
+  font-weight: 200; /* ExtraLight */
 }

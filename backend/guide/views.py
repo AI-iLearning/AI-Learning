@@ -5,7 +5,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import SendChat
 from django.contrib.auth import get_user_model
 import json
-
+from django.db.models import Max
 # CustomUser 모델을 가져오기 위해 get_user_model 사용
 User = get_user_model()
 
@@ -68,18 +68,23 @@ class SelectGuideView(APIView):
 
     def get(self, request):
         user = request.user  # JWT 인증된 사용자 정보
-        
+
         # 1~20 가이드 중에서 대화한 가이드들을 필터링
-        chats = SendChat.objects.filter(user=user, guide_id__range=(1, 20))
-        
-        # 가이드 ID별로 채팅 메시지를 그룹화
+        latest_chats = (
+            SendChat.objects.filter(user=user, guide_id__range=(1, 20))
+            .values('guide_id')
+            .annotate(latest_chat_time=Max('created_at'))
+            .order_by('-latest_chat_time')
+        )
+
         guide_chat_data = {}
-        for chat in chats:
-            if chat.guide_id not in guide_chat_data:
-                guide_chat_data[chat.guide_id] = []
-            guide_chat_data[chat.guide_id].append(chat.chat_message)
-        
-        # 가이드 ID와 대화 내용을 배열 형식으로 포맷
+        for entry in latest_chats:
+            guide_id = entry['guide_id']
+            chat_messages = SendChat.objects.filter(
+                user=user, guide_id=guide_id
+            ).order_by('created_at').values_list('chat_message', flat=True)
+            guide_chat_data[guide_id] = list(chat_messages)
+
         response_data = [
             {
                 "guideId": guide_id,
@@ -87,5 +92,5 @@ class SelectGuideView(APIView):
             }
             for guide_id, chat_messages in guide_chat_data.items()
         ]
-        
+
         return Response(response_data, status=200)

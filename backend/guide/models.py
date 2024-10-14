@@ -8,7 +8,8 @@ class SendChat(models.Model):
     guide_id = models.IntegerField()
     chat_message = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
 
     def __str__(self):
         return self.chat_message
